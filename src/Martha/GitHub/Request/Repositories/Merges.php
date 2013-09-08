@@ -12,4 +12,15 @@ use Martha\GitHub\Request\AbstractRequest;
  */
 class Merges extends AbstractRequest
 {
+    /**
+     * @see http://developer.github.com/v3/repos/merging/#perform-a-merge
+     * @param string $owner
+     * @param string $repo
+     * @param array $parameters
+     * @return array
+     */
+    public function merge($owner, $repo, array $parameters)
+    {
+        return array();
+    }
 }
