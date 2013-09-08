@@ -1,0 +1,21 @@
+{
+    "name": "martha/github-api",
+    "description": "GitHub API Implementation in PHP 5.3+",
+    "type": "library",
+    "keywords": ["github", "api", "php"],
+    "homepage": "http://github.com/mrkrstphr/github-api",
+    "license": "GPL-3.0",
+    "require": {
+        "php": ">=5.3",
+        "guzzle/guzzle": "3.7.*"
+    },
+    "require-dev": {
+        "phpunit/PHPUnit": "3.7.*",
+        "squizlabs/php_codesniffer": "1.*"
+    },
+    "autoload": {
+        "psr-0": {
+            "Martha\\GitHub\\": "src/"
+        }
+    }
+}
