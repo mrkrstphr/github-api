@@ -54,6 +54,11 @@ class Client
         return $this->client;
     }
 
+    /**
+     * Returns an instance of the Repositories API request end point.
+     *
+     * @return Request\Repositories
+     */
     public function repositories()
     {
         $repositories = new Request\Repositories($this);
@@ -67,7 +72,55 @@ class Client
      */
     public function get($path, array $parameters = array())
     {
-        $request = $this->client->get('https://api.github.com' . $path, null, $parameters);
+        $queryString = http_build_query($parameters);
+        $url = 'https://api.github.com' . $path . '?' . $queryString;
+
+        $request = $this->client->get($url, null, $parameters);
+        $response = $request->send();
+
+        $data = $response->json();
+
+        return $data;
+    }
+
+    /**
+     * @param string $path
+     * @param array $parameters
+     * @return array
+     */
+    public function post($path, array $parameters = array())
+    {
+        $request = $this->client->post('https://api.github.com' . $path, null, $parameters);
+        $response = $request->send();
+
+        $data = $response->json();
+
+        return $data;
+    }
+
+    /**
+     * @param string $path
+     * @param array $parameters
+     * @return array
+     */
+    public function patch($path, array $parameters = array())
+    {
+        $request = $this->client->patch('https://api.github.com' . $path, null, $parameters);
+        $response = $request->send();
+
+        $data = $response->json();
+
+        return $data;
+    }
+
+    /**
+     * @param string $path
+     * @param array $parameters
+     * @return array
+     */
+    public function delete($path, array $parameters = array())
+    {
+        $request = $this->client->delete('https://api.github.com' . $path, null, $parameters);
         $response = $request->send();
 
         $data = $response->json();

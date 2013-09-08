@@ -19,7 +19,12 @@ class Repositories extends AbstractRequest
      */
     public function me(array $parameters = array())
     {
-        return array();
+        $defaults = array('page' => 1);
+        $parameters = array_merge($defaults, $parameters);
+
+        $response = $this->client->get('/user/repos', $parameters);
+
+        return $response;
     }
 
     /**
@@ -32,7 +37,12 @@ class Repositories extends AbstractRequest
      */
     public function user($user, array $parameters = array())
     {
-        return [];
+        $defaults = array('page' => 1);
+        $parameters = array_merge($defaults, $parameters);
+
+        $response = $this->client->get('/users/' . urlencode($user) . '/repos', $parameters);
+
+        return $response;
     }
 
     /**
@@ -45,7 +55,12 @@ class Repositories extends AbstractRequest
      */
     public function organization($organization, array $parameters = array())
     {
-        return [];
+        $defaults = array('page' => 1);
+        $parameters = array_merge($defaults, $parameters);
+
+        $response = $this->client->get('/orgs/' . urlencode($organization) . '/repos', $parameters);
+
+        return $response;
     }
 
     /**
@@ -66,24 +81,42 @@ class Repositories extends AbstractRequest
     }
 
     /**
+     * Creates a new repository for the authenticated user.
+     *
      * @see http://developer.github.com/v3/repos/#create
+     * @throws MalformedRequestException
      * @param array $parameters
      * @return array
      */
-    public function create(array $parameters = array())
+    public function create(array $parameters)
     {
-        return [];
+        if (!isset($parameters['name'])) {
+            throw new MalformedRequestException('Name is required when creating a repository');
+        }
+
+        $response = $this->client->post('/user/repos', $parameters);
+
+        return $response;
     }
 
     /**
+     * Creates a new repository for the specified organization.
+     *
      * @see http://developer.github.com/v3/repos/#create
      * @param string $organization
      * @param array $parameters
      * @return array
+     * @throws MalformedRequestException
      */
     public function createOrg($organization, array $parameters = array())
     {
-        return [];
+        if (!isset($parameters['name'])) {
+            throw new MalformedRequestException('Name is required when creating a repository');
+        }
+
+        $response = $this->client->post('/orgs/' . urlencode($organization) . '/repos', $parameters);
+
+        return $response;
     }
 
     /**
@@ -103,14 +136,21 @@ class Repositories extends AbstractRequest
 
     /**
      * @see http://developer.github.com/v3/repos/#edit
-     * @param $owner
-     * @param $repo
+     * @throws MalformedRequestException
+     * @param string $owner
+     * @param string $repo
      * @param array $parameters
      * @return array
      */
     public function edit($owner, $repo, array $parameters = array())
     {
-        return [];
+        if (!isset($parameters['name'])) {
+            throw new MalformedRequestException('Name is required when creating a repository');
+        }
+
+        $response = $this->client->patch('/repos/' . urlencode($owner) . '/' . urlencode($repo), $parameters);
+
+        return $response;
     }
 
     /**
@@ -122,7 +162,15 @@ class Repositories extends AbstractRequest
      */
     public function contributors($owner, $repo, array $parameters = array())
     {
-        return [];
+        $defaults = array('page' => 1);
+        $parameters = array_merge($defaults, $parameters);
+
+        $response = $this->client->get(
+            '/repos/' . urlencode($owner) . '/' . urlencode($repo) . '/contributors',
+            $parameters
+        );
+
+        return $response;
     }
 
     /**
@@ -133,7 +181,8 @@ class Repositories extends AbstractRequest
      */
     public function languages($owner, $repo)
     {
-        return [];
+        $response = $this->client->get('/repos/' . urlencode($owner) . '/' . urlencode($repo) . '/languages');
+        return $response;
     }
 
     /**
@@ -144,7 +193,8 @@ class Repositories extends AbstractRequest
      */
     public function teams($owner, $repo)
     {
-        return [];
+        $response = $this->client->get('/repos/' . urlencode($owner) . '/' . urlencode($repo) . '/teams');
+        return $response;
     }
 
     /**
@@ -155,7 +205,8 @@ class Repositories extends AbstractRequest
      */
     public function tags($owner, $repo)
     {
-        return [];
+        $response = $this->client->get('/repos/' . urlencode($owner) . '/' . urlencode($repo) . '/tags');
+        return $response;
     }
 
     /**
@@ -166,7 +217,8 @@ class Repositories extends AbstractRequest
      */
     public function branches($owner, $repo)
     {
-        return [];
+        $response = $this->client->get('/repos/' . urlencode($owner) . '/' . urlencode($repo) . '/branches');
+        return $response;
     }
 
     /**
@@ -178,7 +230,10 @@ class Repositories extends AbstractRequest
      */
     public function branch($owner, $repo, $branch)
     {
-        return [];
+        $response = $this->client->get(
+            '/repos/' . urlencode($owner) . '/' . urlencode($repo) . '/branches/' . urlencode($branch)
+        );
+        return $response;
     }
 
     /**
@@ -188,6 +243,116 @@ class Repositories extends AbstractRequest
      */
     public function delete($owner, $repo)
     {
+        $this->client->delete('/repos/' . urlencode($owner) . '/' . urlencode($repo));
+    }
 
+    /**
+     * Return the Collaborators API endpoint.
+     *
+     * @return Repositories\Collaborators
+     */
+    public function collaborators()
+    {
+        return new Repositories\Collaborators($this->getClient());
+    }
+
+    /**
+     * Return the Comments API endpoint.
+     *
+     * @return Repositories\Comments
+     */
+    public function comments()
+    {
+        return new Repositories\Comments($this->getClient());
+    }
+
+    /**
+     * Return the Commits API endpoint.
+     *
+     * @return Repositories\Commits
+     */
+    public function commits()
+    {
+        return new Repositories\Commits($this->getClient());
+    }
+
+    /**
+     * Return the Contents API endpoint.
+     *
+     * @return Repositories\Contents
+     */
+    public function contents()
+    {
+        return new Repositories\Contents($this->getClient());
+    }
+
+    /**
+     * Return the Downloads API endpoint.
+     *
+     * @return Repositories\Downloads
+     */
+    public function downloads()
+    {
+        return new Repositories\Downloads($this->getClient());
+    }
+
+    /**
+     * Return the Forks API endpoint.
+     *
+     * @return Repositories\Forks
+     */
+    public function forks()
+    {
+        return new Repositories\Forks($this->getClient());
+    }
+
+    /**
+     * Return the Hooks API endpoint.
+     *
+     * @return Repositories\Hooks
+     */
+    public function hooks()
+    {
+        return new Repositories\Hooks($this->getClient());
+    }
+
+    /**
+     * Return the Keys API endpoint.
+     *
+     * @return Repositories\Keys
+     */
+    public function keys()
+    {
+        return new Repositories\Keys($this->getClient());
+    }
+
+    /**
+     * Return the Merges API endpoint.
+     *
+     * @return Repositories\Merges
+     */
+    public function merges()
+    {
+        return new Repositories\Merges($this->getClient());
+    }
+
+    /**
+     * Return the Stats API endpoint.
+     *
+     * @return Repositories\Stats
+     */
+    public function stats()
+    {
+        return new Repositories\Stats($this->getClient());
+    }
+
+    /**
+     * Return the Statuses API endpoint.
+     *
+     * @return Repositories\Statuses
+     */
+    public function statuses()
+    {
+        return new Repositories\Statuses($this->getClient());
     }
 }
