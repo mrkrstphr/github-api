@@ -13,6 +13,8 @@ use Martha\GitHub\Request\AbstractRequest;
 class Stats extends AbstractRequest
 {
     /**
+     * Get repository contributor statistics.
+     *
      * @see http://developer.github.com/v3/repos/statistics/#get-contributors-list-with-additions-deletions-and-commit-counts
      * @param string $owner
      * @param string $repo
@@ -26,6 +28,8 @@ class Stats extends AbstractRequest
     }
 
     /**
+     * Get repository commit activity (last year).
+     *
      * @see http://developer.github.com/v3/repos/statistics/#get-the-last-year-of-commit-activity-data
      * @param string $owner
      * @param string $repo
@@ -39,6 +43,8 @@ class Stats extends AbstractRequest
     }
 
     /**
+     * Get repository code frequency (additions and deletions per week).
+     *
      * @see http://developer.github.com/v3/repos/statistics/#get-the-number-of-additions-and-deletions-per-week
      * @param string $owner
      * @param string $repo
@@ -52,6 +58,8 @@ class Stats extends AbstractRequest
     }
 
     /**
+     * Get repository participation (weekly commit count).
+     *
      * @see http://developer.github.com/v3/repos/statistics/#get-the-weekly-commit-count-for-the-repo-owner-and-everyone-else
      * @param string $owner
      * @param string $repo
@@ -65,6 +73,8 @@ class Stats extends AbstractRequest
     }
 
     /**
+     * Get the repository punch card (number of commits per hour each day).
+     *
      * @see http://developer.github.com/v3/repos/statistics/#get-the-number-of-commits-per-hour-in-each-day
      * @param string $owner
      * @param string $repo
