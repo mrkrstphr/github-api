@@ -13,6 +13,8 @@ use Martha\GitHub\Request\AbstractRequest;
 class Hooks extends AbstractRequest
 {
     /**
+     * Get all hooks for a given repository.
+     *
      * @see http://developer.github.com/v3/repos/hooks/#list
      * @param string $owner
      * @param string $repo
@@ -26,6 +28,8 @@ class Hooks extends AbstractRequest
     }
 
     /**
+     * Get information about a specific hook for a given repository.
+     *
      * @see http://developer.github.com/v3/repos/hooks/#get-single-hook
      * @param string $owner
      * @param string $repo
@@ -40,31 +44,44 @@ class Hooks extends AbstractRequest
     }
 
     /**
-     * @todo
+     * Create hook events for a given repository. A parameter of name and config is required. See the GitHub
+     * documentation for more information.
+     *
      * @see http://developer.github.com/v3/repos/hooks/#create-a-hook
      * @param string $owner
      * @param string $repo
+     * @param array $parameters
      * @return array
      */
-    public function create($owner, $repo)
+    public function create($owner, $repo, array $parameters)
     {
-        return array();
+        return $this->client->post(
+            '/repos/' . urlencode($owner) . '/' . urlencode($repo) . '/hooks',
+            $parameters
+        );
     }
 
     /**
-     * @todo
+     * Edit information about the hook events for a given repository.
+     *
      * @see http://developer.github.com/v3/repos/hooks/#edit-a-hook
      * @param string $owner
      * @param string $repo
      * @param string $id
+     * @param array $parameters
      * @return array
      */
-    public function edit($owner, $repo, $id)
+    public function edit($owner, $repo, $id, array $parameters)
     {
-        return array();
+        return $this->client->patch(
+            '/repos/' . urlencode($owner) . '/' . urlencode($repo) . '/hooks/' . urlencode($id),
+            $parameters
+        );
     }
 
     /**
+     * Send a test hook for the given repository.
+     *
      * @see http://developer.github.com/v3/repos/hooks/#test-a-push-hook
      * @param string $owner
      * @param string $repo
@@ -79,7 +96,8 @@ class Hooks extends AbstractRequest
     }
 
     /**
-     * @todo
+     * Deletes the specified hook events from a given repository.
+     * 
      * @see http://developer.github.com/v3/repos/hooks/#delete-a-hook
      * @param string $owner
      * @param string $repo
@@ -88,6 +106,8 @@ class Hooks extends AbstractRequest
      */
     public function delete($owner, $repo, $id)
     {
-        return array();
+        return $this->client->delete(
+            '/repos/' . urlencode($owner) . '/' . urlencode($repo) . '/hooks/' . urlencode($id)
+        );
     }
 }
