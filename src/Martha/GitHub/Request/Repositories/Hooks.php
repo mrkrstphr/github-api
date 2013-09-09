@@ -102,11 +102,10 @@ class Hooks extends AbstractRequest
      * @param string $owner
      * @param string $repo
      * @param string $id
-     * @return array
      */
     public function delete($owner, $repo, $id)
     {
-        return $this->client->delete(
+        $this->client->delete(
             '/repos/' . urlencode($owner) . '/' . urlencode($repo) . '/hooks/' . urlencode($id)
         );
     }
