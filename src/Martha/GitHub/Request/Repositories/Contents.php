@@ -115,7 +115,6 @@ class Contents extends AbstractRequest
      * @param string $repo
      * @param string $path
      * @param array $parameters
-     * @return array
      */
     public function delete($owner, $repo, $path, array $parameters)
     {
@@ -127,7 +126,7 @@ class Contents extends AbstractRequest
             throw new MalformedRequestException('SHA hash of the file being removed is required');
         }
 
-        return $this->client->delete(
+        $this->client->delete(
             '/repos/' . urlencode($owner) . '/' . urlencode($repo) . '/contents/' . urlencode($path),
             $parameters
         );
