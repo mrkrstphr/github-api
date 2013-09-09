@@ -3,6 +3,7 @@
 namespace Martha\GitHub\Request\Repositories;
 
 use Martha\GitHub\Request\AbstractRequest;
+use Martha\GitHub\Request\MalformedRequestException;
 
 /**
  * Class Merges
@@ -13,7 +14,10 @@ use Martha\GitHub\Request\AbstractRequest;
 class Merges extends AbstractRequest
 {
     /**
+     * Performs a merge.
+     *
      * @see http://developer.github.com/v3/repos/merging/#perform-a-merge
+     * @throws MalformedRequestException
      * @param string $owner
      * @param string $repo
      * @param array $parameters
@@ -21,6 +25,10 @@ class Merges extends AbstractRequest
      */
     public function merge($owner, $repo, array $parameters)
     {
+        if (!isset($parameters['base']) || !isset($parameters['head'])) {
+            throw new MalformedRequestException('Base and head are required to perform a merge');
+        }
+
         return $this->client->post(
             '/repos/' . urlencode($owner) . '/' . urlencode($repo) . '/merges',
             $parameters
