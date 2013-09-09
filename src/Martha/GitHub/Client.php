@@ -22,7 +22,8 @@ class Client
     protected $config;
 
     /**
-     *
+     * @param array $config
+     * @param HttpClient $httpClient
      */
     public function __construct($config = array(), HttpClient $httpClient = null)
     {
@@ -66,6 +67,34 @@ class Client
     }
 
     /**
+     * @param string $method
+     * @param string $path
+     * @param array $parameters
+     * @return mixed
+     */
+    protected function request($method, $path, array $parameters = array())
+    {
+        $request = $this->client->createRequest($method, $path, null, $parameters);
+        $response = $request->send();
+
+        if ($response->getStatusCode() == '302') {
+            $location = $response->getHeader('Location');
+
+            if ($location) {
+                return $this->get($location);
+            }
+        }
+
+        if (substr($response->getContentType(), 0, 16) == 'application/json') {
+            $data = $response->json();
+        } else {
+            $data = $response->getBody(true);
+        }
+
+        return $data;
+    }
+
+    /**
      * @param string $path
      * @param array $parameters
      * @return array
@@ -74,13 +103,7 @@ class Client
     {
         $queryString = http_build_query($parameters);
         $url = 'https://api.github.com' . $path . '?' . $queryString;
-
-        $request = $this->client->get($url, null, $parameters);
-        $response = $request->send();
-
-        $data = $response->json();
-
-        return $data;
+        return $this->request('GET', $url);
     }
 
     /**
@@ -90,12 +113,7 @@ class Client
      */
     public function post($path, array $parameters = array())
     {
-        $request = $this->client->post('https://api.github.com' . $path, null, $parameters);
-        $response = $request->send();
-
-        $data = $response->json();
-
-        return $data;
+        return $this->request('POST', 'https://api.github.com' . $path, $parameters);
     }
 
     /**
@@ -105,12 +123,7 @@ class Client
      */
     public function put($path, array $parameters = array())
     {
-        $request = $this->client->put('https://api.github.com' . $path, null, $parameters);
-        $response = $request->send();
-
-        $data = $response->json();
-
-        return $data;
+        return $this->request('PUT', 'https://api.github.com' . $path, $parameters);
     }
 
     /**
@@ -120,12 +133,7 @@ class Client
      */
     public function patch($path, array $parameters = array())
     {
-        $request = $this->client->patch('https://api.github.com' . $path, null, $parameters);
-        $response = $request->send();
-
-        $data = $response->json();
-
-        return $data;
+        return $this->request('PATCH', 'https://api.github.com' . $path, $parameters);
     }
 
     /**
@@ -135,11 +143,6 @@ class Client
      */
     public function delete($path, array $parameters = array())
     {
-        $request = $this->client->delete('https://api.github.com' . $path, null, $parameters);
-        $response = $request->send();
-
-        $data = $response->json();
-
-        return $data;
+        return $this->request('DELETE', 'https://api.github.com' . $path, $parameters);
     }
 }
