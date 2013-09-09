@@ -13,6 +13,8 @@ use Martha\GitHub\Request\AbstractRequest;
 class Forks extends AbstractRequest
 {
     /**
+     * Get all forks of a given repository.
+     * 
      * @see http://developer.github.com/v3/repos/forks/#list-forks
      * @param string $owner
      * @param string $repo
