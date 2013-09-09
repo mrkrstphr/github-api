@@ -89,7 +89,7 @@ class Keys extends AbstractRequest
      */
     public function delete($owner, $repo, $id)
     {
-        return $this->client->delete(
+        $this->client->delete(
             '/repos/' . urlencode($owner) . '/' . urlencode($repo) . '/keys/' . urlencode($id)
         );
     }
