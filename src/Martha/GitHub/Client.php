@@ -103,6 +103,21 @@ class Client
      * @param array $parameters
      * @return array
      */
+    public function put($path, array $parameters = array())
+    {
+        $request = $this->client->put('https://api.github.com' . $path, null, $parameters);
+        $response = $request->send();
+
+        $data = $response->json();
+
+        return $data;
+    }
+
+    /**
+     * @param string $path
+     * @param array $parameters
+     * @return array
+     */
     public function patch($path, array $parameters = array())
     {
         $request = $this->client->patch('https://api.github.com' . $path, null, $parameters);

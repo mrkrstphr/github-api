@@ -13,6 +13,8 @@ use Martha\GitHub\Request\AbstractRequest;
 class Collaborators extends AbstractRequest
 {
     /**
+     * Get all collaborators for a given repository.
+     *
      * @see http://developer.github.com/v3/repos/collaborators/#list
      * @param string $owner
      * @param string $repo
@@ -24,6 +26,8 @@ class Collaborators extends AbstractRequest
     }
 
     /**
+     * Get information about a collaborator for a given repository.
+     *
      * @see http://developer.github.com/v3/repos/collaborators/#get
      * @param string $owner
      * @param string $repo
@@ -38,7 +42,8 @@ class Collaborators extends AbstractRequest
     }
 
     /**
-     * @todo
+     * Add a user as a collaborator of a given repository.
+     *
      * @see http://developer.github.com/v3/repos/collaborators/#add-collaborator
      * @param string $owner
      * @param string $repo
@@ -47,11 +52,14 @@ class Collaborators extends AbstractRequest
      */
     public function add($owner, $repo, $user)
     {
-        return array();
+        return $this->client->put(
+            '/repos/' . urlencode($owner) . '/' . urlencode($repo) . '/collaborators/' . urlencode($user)
+        );
     }
 
     /**
-     * @todo
+     * Remove a user as a collaborator for a given repository.
+     *
      * @see http://developer.github.com/v3/repos/collaborators/#remove-collaborator
      * @param string $owner
      * @param string $repo
@@ -59,5 +67,8 @@ class Collaborators extends AbstractRequest
      */
     public function remove($owner, $repo, $user)
     {
+        $this->client->delete(
+            '/repos/' . urlencode($owner) . '/' . urlencode($repo) . '/collaborators/' . urlencode($user)
+        );
     }
 }
