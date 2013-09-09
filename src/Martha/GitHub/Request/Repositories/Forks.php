@@ -28,7 +28,9 @@ class Forks extends AbstractRequest
     }
 
     /**
-     * @todo
+     * Fork the specified repository to the authenticated user's account. If an organization is supplied via the
+     * parameters, the fork will be created for that organization instead.
+     *
      * @see http://developer.github.com/v3/repos/forks/#create-a-fork
      * @param string $owner
      * @param string $repo
@@ -37,6 +39,9 @@ class Forks extends AbstractRequest
      */
     public function create($owner, $repo, array $parameters = array())
     {
-        return array();
+        return $this->client->post(
+            '/repos/' . urlencode($owner) . '/' . urlencode($repo) . '/forks',
+            $parameters
+        );
     }
 }
