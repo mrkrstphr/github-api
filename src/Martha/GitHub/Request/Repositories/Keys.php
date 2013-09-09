@@ -13,6 +13,8 @@ use Martha\GitHub\Request\AbstractRequest;
 class Keys extends AbstractRequest
 {
     /**
+     * Get all keys for the given repository.
+     *
      * @see http://developer.github.com/v3/repos/keys/#list
      * @param string $owner
      * @param string $repo
@@ -26,10 +28,13 @@ class Keys extends AbstractRequest
     }
 
     /**
+     * Get information about a specific key of a given repository.
+     *
      * @see http://developer.github.com/v3/repos/keys/#get
      * @param string $owner
      * @param string $repo
      * @param string $id
+     * @param array $parameters
      * @return array
      */
     public function key($owner, $repo, $id)
@@ -40,32 +45,43 @@ class Keys extends AbstractRequest
     }
 
     /**
-     * @todo
+     * Create a key for a given repository.
+     *
      * @see http://developer.github.com/v3/repos/keys/#create
      * @param string $owner
      * @param string $repo
+     * @param array $parameters
      * @return array
      */
-    public function create($owner, $repo)
+    public function create($owner, $repo, array $parameters)
     {
-        return array();
+        return $this->client->post(
+            '/repos/' . urlencode($owner) . '/' . urlencode($repo) . '/keys',
+            $parameters
+        );
     }
 
     /**
-     * @todo
+     * Edit a key for a given repository.
+     *
      * @see http://developer.github.com/v3/repos/keys/#edit
      * @param string $owner
      * @param string $repo
      * @param string $id
+     * @param array $parameters
      * @return array
      */
-    public function edit($owner, $repo, $id)
+    public function edit($owner, $repo, $id, array $parameters)
     {
-        return array();
+        return $this->client->patch(
+            '/repos/' . urlencode($owner) . '/' . urlencode($repo) . '/keys/' . urlencode($id),
+            $parameters
+        );
     }
 
     /**
-     * @todo
+     * Delete a key for a given repository.
+     *
      * @see http://developer.github.com/v3/repos/keys/#delete
      * @param string $owner
      * @param string $repo
@@ -73,6 +89,8 @@ class Keys extends AbstractRequest
      */
     public function delete($owner, $repo, $id)
     {
-
+        return $this->client->delete(
+            '/repos/' . urlencode($owner) . '/' . urlencode($repo) . '/keys/' . urlencode($id)
+        );
     }
 }
