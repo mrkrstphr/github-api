@@ -14,28 +14,31 @@ class Comments extends AbstractRequest
 {
     /**
      * @see http://developer.github.com/v3/repos/comments/#list-commit-comments-for-a-repository
-     * @param string $user
+     * @param string $owner
      * @param string $repo
      * @return array
      */
-    public function comments($user, $repo)
+    public function comments($owner, $repo)
     {
-        return array();
+        return $this->client->get('/repos/' . urlencode($owner) . '/' . urlencode($repo) . '/comments');
     }
 
     /**
      * @see http://developer.github.com/v3/repos/comments/#list-comments-for-a-single-commit
-     * @param string $user
+     * @param string $owner
      * @param string $repo
      * @param string $sha
      * @return array
      */
-    public function commitComments($user, $repo, $sha)
+    public function commitComments($owner, $repo, $sha)
     {
-        return array();
+        return $this->client->get(
+            '/repos/' . urlencode($owner) . '/' . urlencode($repo) . '/commits/' . urlencode($sha) . '/comments'
+        );
     }
 
     /**
+     * @todo
      * @see http://developer.github.com/v3/repos/comments/#create-a-commit-comment
      * @param string $user
      * @param string $repo
@@ -57,10 +60,13 @@ class Comments extends AbstractRequest
      */
     public function get($owner, $repo, $id)
     {
-        return array();
+        return $this->client->get(
+            '/repos/' . urlencode($owner) . '/' . urlencode($repo) . '/comments/' . urlencode($id)
+        );
     }
 
     /**
+     * @todo
      * @see http://developer.github.com/v3/repos/comments/#update-a-commit-comment
      * @param string $owner
      * @param string $repo
@@ -74,6 +80,7 @@ class Comments extends AbstractRequest
     }
 
     /**
+     * @todo
      * @see http://developer.github.com/v3/repos/comments/#delete-a-commit-comment
      * @param string $owner
      * @param string $repo

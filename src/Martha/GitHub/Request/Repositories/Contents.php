@@ -16,11 +16,15 @@ class Contents extends AbstractRequest
      * @see http://developer.github.com/v3/repos/contents/#get-the-readme
      * @param string $owner
      * @param string $repo
+     * @param array $parameters
      * @return array
      */
-    public function readme($owner, $repo)
+    public function readme($owner, $repo, array $parameters = array())
     {
-        return array();
+        return $this->client->get(
+            '/repos/' . urlencode($owner) . '/' . urlencode($repo) . '/readme',
+            $parameters
+        );
     }
 
     /**
@@ -33,10 +37,14 @@ class Contents extends AbstractRequest
      */
     public function contents($owner, $repo, $path, array $parameters = array())
     {
-        return array();
+        return $this->client->get(
+            '/repos/' . urlencode($owner) . '/' . urlencode($repo) . '/contents/' . urlencode($path),
+            $parameters
+        );
     }
 
     /**
+     * @todo
      * @see http://developer.github.com/v3/repos/contents/#create-a-file
      * @param string $owner
      * @param string $repo
@@ -50,6 +58,7 @@ class Contents extends AbstractRequest
     }
 
     /**
+     * @todo
      * @see http://developer.github.com/v3/repos/contents/#update-a-file
      * @param string $owner
      * @param string $repo
@@ -63,6 +72,7 @@ class Contents extends AbstractRequest
     }
 
     /**
+     * @todo
      * @see http://developer.github.com/v3/repos/contents/#delete-a-file
      * @param string $owner
      * @param string $repo
@@ -76,6 +86,7 @@ class Contents extends AbstractRequest
     }
 
     /**
+     * @todo
      * @see http://developer.github.com/v3/repos/contents/#get-archive-link
      * @param string $owner
      * @param string $repo

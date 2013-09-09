@@ -20,7 +20,9 @@ class Stats extends AbstractRequest
      */
     public function contributors($owner, $repo)
     {
-        return array();
+        return $this->client->get(
+            '/repos/' . urlencode($owner) . '/' . urlencode($repo) . '/stats/contributors'
+        );
     }
 
     /**
@@ -31,7 +33,9 @@ class Stats extends AbstractRequest
      */
     public function commitActivity($owner, $repo)
     {
-        return array();
+        return $this->client->get(
+            '/repos/' . urlencode($owner) . '/' . urlencode($repo) . '/stats/commit_activity'
+        );
     }
 
     /**
@@ -42,7 +46,9 @@ class Stats extends AbstractRequest
      */
     public function codeFrequency($owner, $repo)
     {
-        return array();
+        return $this->client->get(
+            '/repos/' . urlencode($owner) . '/' . urlencode($repo) . '/stats/code_frequency'
+        );
     }
 
     /**
@@ -53,7 +59,9 @@ class Stats extends AbstractRequest
      */
     public function participation($owner, $repo)
     {
-        return array();
+        return $this->client->get(
+            '/repos/' . urlencode($owner) . '/' . urlencode($repo) . '/stats/participation'
+        );
     }
 
     /**
@@ -64,6 +72,8 @@ class Stats extends AbstractRequest
      */
     public function punchChard($owner, $repo)
     {
-        return array();
+        return $this->client->get(
+            '/repos/' . urlencode($owner) . '/' . urlencode($repo) . '/stats/punch_card'
+        );
     }
 }

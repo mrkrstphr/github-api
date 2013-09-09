@@ -2,13 +2,15 @@
 
 namespace Martha\GitHub\Request\Repositories;
 
+use Martha\GitHub\Request\AbstractRequest;
+
 /**
  * Class Keys
  *
  * @see http://developer.github.com/v3/repos/keys/
  * @package Martha\GitHub\Request\Repositories
  */
-class Keys
+class Keys extends AbstractRequest
 {
     /**
      * @see http://developer.github.com/v3/repos/keys/#list
@@ -18,7 +20,9 @@ class Keys
      */
     public function keys($owner, $repo)
     {
-        return array();
+        return $this->client->get(
+            '/repos/' . urlencode($owner) . '/' . urlencode($repo) . '/keys'
+        );
     }
 
     /**
@@ -30,10 +34,13 @@ class Keys
      */
     public function key($owner, $repo, $id)
     {
-        return array();
+        return $this->client->get(
+            '/repos/' . urlencode($owner) . '/' . urlencode($repo) . '/keys/' . urlencode($id)
+        );
     }
 
     /**
+     * @todo
      * @see http://developer.github.com/v3/repos/keys/#create
      * @param string $owner
      * @param string $repo
@@ -45,6 +52,7 @@ class Keys
     }
 
     /**
+     * @todo
      * @see http://developer.github.com/v3/repos/keys/#edit
      * @param string $owner
      * @param string $repo
@@ -57,6 +65,7 @@ class Keys
     }
 
     /**
+     * @todo
      * @see http://developer.github.com/v3/repos/keys/#delete
      * @param string $owner
      * @param string $repo

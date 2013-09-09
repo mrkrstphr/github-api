@@ -20,7 +20,7 @@ class Collaborators extends AbstractRequest
      */
     public function collaborators($owner, $repo)
     {
-        return array();
+        return $this->client->get('/repos/' . urlencode($owner) . '/' . urlencode($repo) . '/collaborators');
     }
 
     /**
@@ -32,10 +32,13 @@ class Collaborators extends AbstractRequest
      */
     public function get($owner, $repo, $user)
     {
-        return array();
+        return $this->client->get(
+            '/repos/' . urlencode($owner) . '/' . urlencode($repo) . '/collaborators/' . urlencode($user)
+        );
     }
 
     /**
+     * @todo
      * @see http://developer.github.com/v3/repos/collaborators/#add-collaborator
      * @param string $owner
      * @param string $repo
@@ -48,6 +51,7 @@ class Collaborators extends AbstractRequest
     }
 
     /**
+     * @todo
      * @see http://developer.github.com/v3/repos/collaborators/#remove-collaborator
      * @param string $owner
      * @param string $repo

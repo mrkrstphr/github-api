@@ -20,7 +20,9 @@ class Downloads extends AbstractRequest
      */
     public function downloads($owner, $repo)
     {
-        return array();
+        return $this->client->get(
+            '/repos/' . urlencode($owner) . '/' . urlencode($repo) . '/downloads'
+        );
     }
 
     /**
@@ -32,10 +34,13 @@ class Downloads extends AbstractRequest
      */
     public function download($owner, $repo, $id)
     {
-        return array();
+        return $this->client->get(
+            '/repos/' . urlencode($owner) . '/' . urlencode($repo) . '/downloads/' . urlencode($id)
+        );
     }
 
     /**
+     * @todo
      * @see http://developer.github.com/v3/repos/downloads/#create-a-new-download-part-1-create-the-resource
      * @param string $owner
      * @param string $repo
@@ -48,6 +53,7 @@ class Downloads extends AbstractRequest
     }
 
     /**
+     * @todo
      * @see http://developer.github.com/v3/repos/downloads/#delete-a-download
      * @param string $owner
      * @param string $repo

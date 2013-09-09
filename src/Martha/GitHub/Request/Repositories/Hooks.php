@@ -20,7 +20,9 @@ class Hooks extends AbstractRequest
      */
     public function hooks($owner, $repo)
     {
-        return array();
+        return $this->client->get(
+            '/repos/' . urlencode($owner) . '/' . urlencode($repo) . '/hooks'
+        );
     }
 
     /**
@@ -32,10 +34,13 @@ class Hooks extends AbstractRequest
      */
     public function hook($owner, $repo, $id)
     {
-        return array();
+        return $this->client->get(
+            '/repos/' . urlencode($owner) . '/' . urlencode($repo) . '/hooks/' . urlencode($id)
+        );
     }
 
     /**
+     * @todo
      * @see http://developer.github.com/v3/repos/hooks/#create-a-hook
      * @param string $owner
      * @param string $repo
@@ -47,6 +52,7 @@ class Hooks extends AbstractRequest
     }
 
     /**
+     * @todo
      * @see http://developer.github.com/v3/repos/hooks/#edit-a-hook
      * @param string $owner
      * @param string $repo
@@ -67,10 +73,13 @@ class Hooks extends AbstractRequest
      */
     public function test($owner, $repo, $id)
     {
-        return array();
+        return $this->client->post(
+            '/repos/' . urlencode($owner) . '/' . urlencode($repo) . '/hooks/' . urlencode($id) . '/tests'
+        );
     }
 
     /**
+     * @todo
      * @see http://developer.github.com/v3/repos/hooks/#delete-a-hook
      * @param string $owner
      * @param string $repo

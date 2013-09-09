@@ -21,10 +21,13 @@ class Statuses extends AbstractRequest
      */
     public function statuses($owner, $repo, $ref)
     {
-        return array();
+        return $this->client->get(
+            '/repos/' . urlencode($owner) . '/' . urlencode($repo) . '/statuses/' . urlencode($ref)
+        );
     }
 
     /**
+     * @todo
      * @see http://developer.github.com/v3/repos/statuses/#create-a-status
      * @param string $owner
      * @param string $repo

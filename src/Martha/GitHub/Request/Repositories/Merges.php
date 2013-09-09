@@ -21,6 +21,9 @@ class Merges extends AbstractRequest
      */
     public function merge($owner, $repo, array $parameters)
     {
-        return array();
+        return $this->client->post(
+            '/repos/' . urlencode($owner) . '/' . urlencode($repo) . '/merges',
+            $parameters
+        );
     }
 }

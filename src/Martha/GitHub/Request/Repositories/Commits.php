@@ -14,38 +14,46 @@ class Commits extends AbstractRequest
 {
     /**
      * @see http://developer.github.com/v3/repos/commits/#list-commits-on-a-repository
-     * @param string $user
+     * @param string $owner
      * @param string $repo
      * @param array $parameters
      * @return array
      */
-    public function commits($user, $repo, array $parameters = array())
+    public function commits($owner, $repo, array $parameters = array())
     {
-        return array();
+        return $this->client->get(
+            '/repos/' . urlencode($owner) . '/' . urlencode($repo) . '/commits',
+            $parameters
+        );
     }
 
     /**
      * @see http://developer.github.com/v3/repos/commits/#get-a-single-commit
-     * @param string $user
+     * @param string $owner
      * @param string $repo
      * @param $sha
      * @return array
      */
-    public function commit($user, $repo, $sha)
+    public function commit($owner, $repo, $sha)
     {
-        return array();
+        return $this->client->get(
+            '/repos/' . urlencode($owner) . '/' . urlencode($repo) . '/commits/' . urlencode($sha)
+        );
     }
 
     /**
      * @see http://developer.github.com/v3/repos/commits/#compare-two-commits
-     * @param string $user
+     * @param string $owner
      * @param string $repo
      * @param string $base
      * @param string $head
      * @return array
      */
-    public function compare($user, $repo, $base, $head)
+    public function compare($owner, $repo, $base, $head)
     {
-        return array();
+        return $this->client->get(
+            '/repos/' . urlencode($owner) . '/' . urlencode($repo) . '/compare/' .
+            urlencode($base) . '...' . urlencode($head)
+        );
     }
 }
