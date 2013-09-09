@@ -337,6 +337,16 @@ class Repositories extends AbstractRequest
     }
 
     /**
+     * Return the Milestones API endpoint.
+     *
+     * @return Repositories\Milestones
+     */
+    public function milestones()
+    {
+        return new Repositories\Milestones($this->getClient());
+    }
+
+    /**
      * Return the Stats API endpoint.
      *
      * @return Repositories\Stats

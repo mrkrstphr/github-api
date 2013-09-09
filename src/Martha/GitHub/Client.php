@@ -56,6 +56,66 @@ class Client
     }
 
     /**
+     * Returns an instance of the Gists API request end point.
+     *
+     * @return Request\Gists
+     */
+    public function gists()
+    {
+        return new Request\Gists($this);
+    }
+
+    /**
+     * Returns an instance of the GitIgnore API request end point.
+     *
+     * @return Request\GitIgnore
+     */
+    public function gitIgnore()
+    {
+        return new Request\GitIgnore($this);
+    }
+
+    /**
+     * Returns an instance of the Issues API request end point.
+     *
+     * @return Request\Issues
+     */
+    public function issues()
+    {
+        return new Request\Issues($this);
+    }
+
+    /**
+     * Returns an instance of the Markdown API request end point.
+     *
+     * @return Request\Markdown
+     */
+    public function markdown()
+    {
+        return new Request\Markdown($this);
+    }
+
+    /**
+     * Returns an instance of the Organizations API request end point.
+     *
+     * @return Request\Organizations
+     */
+    public function organizations()
+    {
+        return new Request\Organizations($this);
+    }
+
+    /**
+     * Returns an instance of the PullRequests API request end point.
+     *
+     * @return Request\PullRequests
+     */
+    public function pullRequests()
+    {
+        return new Request\PullRequests($this);
+    }
+
+    /**
      * Returns an instance of the Repositories API request end point.
      *
      * @return Request\Repositories
@@ -64,6 +124,26 @@ class Client
     {
         $repositories = new Request\Repositories($this);
         return $repositories;
+    }
+
+    /**
+     * Returns an instance of the Search API request end point.
+     *
+     * @return Request\Search
+     */
+    public function search()
+    {
+        return new Request\Search($this);
+    }
+
+    /**
+     * Returns an instance of the Users API request end point.
+     *
+     * @return Request\Users
+     */
+    public function users()
+    {
+        return new Request\Users($this);
     }
 
     /**
