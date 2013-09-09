@@ -3,6 +3,7 @@
 namespace Martha\GitHub\Request\Repositories;
 
 use Martha\GitHub\Request\AbstractRequest;
+use Martha\GitHub\Request\MalformedRequestException;
 
 /**
  * Class Statuses
@@ -13,6 +14,8 @@ use Martha\GitHub\Request\AbstractRequest;
 class Statuses extends AbstractRequest
 {
     /**
+     * Get status for a specific reference of a given repository.
+     *
      * @see http://developer.github.com/v3/repos/statuses/#list-statuses-for-a-specific-ref
      * @param string $owner
      * @param string $repo
@@ -27,15 +30,25 @@ class Statuses extends AbstractRequest
     }
 
     /**
-     * @todo
+     * Create a commit status for a specific reference for a given repository.
+     *
      * @see http://developer.github.com/v3/repos/statuses/#create-a-status
+     * @throws MalformedRequestException
      * @param string $owner
      * @param string $repo
      * @param string $sha
+     * @param array $parameters
      * @return array
      */
-    public function create($owner, $repo, $sha)
+    public function create($owner, $repo, $sha, array $parameters)
     {
-        return array();
+        if (!isset($parameters['state'])) {
+            throw new MalformedRequestException('State is required');
+        }
+
+        return $this->client->post(
+            '/repos/' . urlencode($owner) . '/' . urlencode($repo) . '/statuses/' . urlencode($sha),
+            $parameters
+        );
     }
 }
