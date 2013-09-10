@@ -3,9 +3,12 @@
 namespace Martha\GitHub\Request\Repositories;
 
 use Martha\GitHub\Request\AbstractRequest;
+use Martha\GitHub\Request\MalformedRequestException;
 
 /**
  * Class Milestones
+ *
+ * @see http://developer.github.com/v3/issues/milestones/
  * @package Martha\GitHub\Request\Repositories
  */
 class Milestones extends AbstractRequest
@@ -13,7 +16,6 @@ class Milestones extends AbstractRequest
     /**
      * List Milestones for a repository.
      *
-     * @todo
      * @see http://developer.github.com/v3/issues/milestones/#list-milestones-for-a-repository
      * @param string $owner
      * @param string $repo
@@ -22,13 +24,15 @@ class Milestones extends AbstractRequest
      */
     public function milestones($owner, $repo, array $parameters = array())
     {
-        return array();
+        return $this->client->get(
+            '/repos/' . urlencode($owner) . '/' . urlencode($repo) . '/milestones',
+            $parameters
+        );
     }
 
     /**
      * Get a single milestone.
      *
-     * @todo
      * @see http://developer.github.com/v3/issues/milestones/#get-a-single-milestone
      * @param string $owner
      * @param string $repo
@@ -37,14 +41,16 @@ class Milestones extends AbstractRequest
      */
     public function milestone($owner, $repo, $number)
     {
-        return array();
+        return $this->client->get(
+            '/repos/' . urlencode($owner) . '/' . urlencode($repo) . '/milestones/' . urlencode($number)
+        );
     }
 
     /**
      * Create a milestone
      *
-     * @todo
      * @see http://developer.github.com/v3/issues/milestones/#create-a-milestone
+     * @throws MalformedRequestException
      * @param string $owner
      * @param string $repo
      * @param array $parameters
@@ -52,13 +58,19 @@ class Milestones extends AbstractRequest
      */
     public function create($owner, $repo, array $parameters)
     {
-        return array();
+        if (isset($parameters['title'])) {
+            throw new MalformedRequestException('Title is required to create a milestone');
+        }
+
+        return $this->client->post(
+            '/repos/' . urlencode($owner) . '/' . urlencode($repo) . '/milestones',
+            $parameters
+        );
     }
 
     /**
      * Update a milestone.
      *
-     * @todo
      * @see http://developer.github.com/v3/issues/milestones/#update-a-milestone
      * @param $owner
      * @param $repo
@@ -68,13 +80,15 @@ class Milestones extends AbstractRequest
      */
     public function update($owner, $repo, $number, array $parameters)
     {
-        return array();
+        return $this->client->patch(
+            '/repos/' . urlencode($owner) . '/' . urlencode($repo) . '/milestones/' . urlencode($number),
+            $parameters
+        );
     }
 
     /**
      * Delete a milestone.
      *
-     * @todo
      * @see http://developer.github.com/v3/issues/milestones/#delete-a-milestone
      * @param string $owner
      * @param string $repo
@@ -82,13 +96,14 @@ class Milestones extends AbstractRequest
      */
     public function delete($owner, $repo, $number)
     {
-
+        $this->client->delete(
+            '/repos/' . urlencode($owner) . '/' . urlencode($repo) . '/milestones/' . urlencode($number)
+        );
     }
 
     /**
      * Get labels for every issue in a milestone.
      *
-     * @todo
      * @see http://developer.github.com/v3/issues/labels/#get-labels-for-every-issue-in-a-milestone
      * @param string $owner
      * @param string $repo
@@ -97,6 +112,8 @@ class Milestones extends AbstractRequest
      */
     public function labels($owner, $repo, $number)
     {
-        return array();
+        return $this->client->get(
+            '/repos/' . urlencode($owner) . '/' . urlencode($repo) . '/milestones/' . urlencode($number) . '/labels'
+        );
     }
 }
