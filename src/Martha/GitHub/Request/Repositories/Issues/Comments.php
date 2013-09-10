@@ -97,7 +97,6 @@ class Comments extends AbstractRequest
     /**
      * Delete a comment.
      *
-     * @todo
      * @see http://developer.github.com/v3/issues/comments/#delete-a-comment
      * @param string $owner
      * @param string $repo
