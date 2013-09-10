@@ -22,6 +22,21 @@ class Users extends AbstractRequest
     }
 
     /**
+     * If user is supplied, list all public organizations for that user. Otherwise list all public and private
+     * organizations for the authenticated user.
+     *
+     * @see http://developer.github.com/v3/orgs/#list-user-organizations
+     * @param string $user
+     * @return array
+     */
+    public function organizations($user = '')
+    {
+        $url = isset($user) ? '/users/' . urlencode($user) . '/orgs' : '/user/orgs';
+
+        return $this->client->get($url);
+    }
+
+    /**
      * Returns an instance of the Users\Emails API request end point.
      *
      * @return Users\Emails
