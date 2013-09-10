@@ -9,6 +9,36 @@ namespace Martha\GitHub\Request;
 class Issues extends AbstractRequest
 {
     /**
+     * List all issues across all the authenticated user's visible repositories including owned repositories,
+     * member repositories, and organization repositories.
+     *
+     * @see http://developer.github.com/v3/issues/#list-issues
+     * @param array $parameters
+     * @return array
+     */
+    public function issues(array $parameters = array())
+    {
+        return $this->client->get('/issues', $parameters);
+    }
+
+    public function issue($owner, $repo, $number)
+    {
+        return array();
+    }
+
+    public function create($owner, $repo, array $parameters)
+    {
+        return array();
+    }
+
+    public function edit($owner, $repo, $number, array $parameters)
+    {
+        return array();
+    }
+
+
+
+    /**
      * Returns an instance of the Issues\Assignees API request end point.
      *
      * @return Gists\Comments

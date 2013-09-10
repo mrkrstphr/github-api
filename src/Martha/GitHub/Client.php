@@ -106,6 +106,16 @@ class Client
     }
 
     /**
+     * Returns an instance of the User API request end point.
+     *
+     * @return Request\Me
+     */
+    public function me()
+    {
+        return new Request\Me($this);
+    }
+
+    /**
      * Returns an instance of the Organizations API request end point.
      *
      * @return Request\Organizations

@@ -36,6 +36,19 @@ class Organizations extends AbstractRequest
     }
 
     /**
+     * List all issues for a given organization.
+     *
+     * @see http://developer.github.com/v3/issues/#list-issues
+     * @param string $organization
+     * @param array $parameters
+     * @return array
+     */
+    public function issues($organization, array $parameters = array())
+    {
+        return $this->client->get('/orgs/' . urlencode($organization) . '/issues', $parameters);
+    }
+
+    /**
      * Returns an instance of the Organizations\Members API request end point.
      *
      * @see http://developer.github.com/v3/orgs/members/
