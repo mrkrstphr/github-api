@@ -59,20 +59,26 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     {
         $expectedResponse = array('test' => 'value');
 
-        $response = $this->getMock('\\Guzzle\\Http\\Response', array('json'));
+        $response = $this->getMock(
+            '\\Guzzle\\Http\\Response',
+            array('json', 'getStatusCode', 'getContentType')
+        );
         $response->expects($this->once())
             ->method('json')
             ->will($this->returnValue($expectedResponse));
+        $response->expects($this->once())
+            ->method('getContentType')
+            ->will($this->returnValue('application/json'));
 
         $request = $this->getMock('\\Guzzle\\Http\\Request', array('send'));
         $request->expects($this->once())
             ->method('send')
             ->will($this->returnValue($response));
 
-        $httpClient = $this->getMock('\\Guzzle\\Http\\Client', array('get'));
+        $httpClient = $this->getMock('\\Guzzle\\Http\\Client', array('get', 'createRequest'));
         $httpClient->expects($this->once())
-            ->method('get')
-            ->with('https://api.github.com/test', null, array())
+            ->method('createRequest')
+            ->with('GET', 'https://api.github.com/test', null, array())
             ->will($this->returnValue($request));
 
         $client = new Client(array(), $httpClient);
@@ -91,6 +97,5 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 
         $this->assertInstanceOf('\\Martha\\GitHub\\Request\\Repositories', $repositories);
         $this->assertInstanceOf('\\Martha\\GitHub\\Client', $repositories->getClient());
-
     }
 }
