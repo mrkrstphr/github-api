@@ -3,6 +3,8 @@
 namespace Martha\GitHub;
 
 use \Guzzle\Http\Client AS HttpClient;
+use Martha\GitHub\Authentication\AbstractAuthentication;
+use Martha\GitHub\Authentication\AuthenticationFactory;
 
 /**
  * Class Client
@@ -22,6 +24,11 @@ class Client
     protected $config;
 
     /**
+     * @var AbstractAuthentication
+     */
+    protected $authentication;
+
+    /**
      * @param array $config
      * @param HttpClient $httpClient
      */
@@ -33,6 +40,9 @@ class Client
 
         $this->client = $httpClient;
         $this->config = $config;
+
+        $authenticationFactory = new AuthenticationFactory();
+        $this->authentication = $authenticationFactory->createAuthentication($config);
     }
 
     /**
@@ -155,6 +165,11 @@ class Client
     protected function request($method, $path, array $parameters = array())
     {
         $request = $this->client->createRequest($method, $path, null, $parameters);
+
+        if ($this->authentication) {
+            $this->authentication->authenticate($request);
+        }
+
         $response = $request->send();
 
         if ($response->getStatusCode() == '302') {
