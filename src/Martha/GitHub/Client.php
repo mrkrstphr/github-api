@@ -2,7 +2,8 @@
 
 namespace Martha\GitHub;
 
-use \Guzzle\Http\Client AS HttpClient;
+use Guzzle\Http\Client as HttpClient;
+use Guzzle\Http\Message\Response;
 use Martha\GitHub\Authentication\AbstractAuthentication;
 use Martha\GitHub\Authentication\AuthenticationFactory;
 
@@ -27,6 +28,11 @@ class Client
      * @var AbstractAuthentication
      */
     protected $authentication;
+
+    /**
+     * @var Response
+     */
+    protected $lastResponse;
 
     /**
      * @param array $config
@@ -106,6 +112,16 @@ class Client
     }
 
     /**
+     * Returns an instance of the User API request end point.
+     *
+     * @return Request\Me
+     */
+    public function me()
+    {
+        return new Request\Me($this);
+    }
+
+    /**
      * Returns an instance of the Organizations API request end point.
      *
      * @return Request\Organizations
@@ -180,6 +196,8 @@ class Client
             }
         }
 
+        $this->lastResponse = $response;
+
         if (substr($response->getContentType(), 0, 16) == 'application/json') {
             $data = $response->json();
         } else {
@@ -187,6 +205,16 @@ class Client
         }
 
         return $data;
+    }
+
+    /**
+     * Get the last response returned from the API.
+     *
+     * @return Response
+     */
+    public function getLastResponse()
+    {
+        return $this->lastResponse;
     }
 
     /**

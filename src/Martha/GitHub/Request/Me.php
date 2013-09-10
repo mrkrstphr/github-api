@@ -3,14 +3,13 @@
 namespace Martha\GitHub\Request;
 
 /**
- * Class Issues
+ * Class Me
  * @package Martha\GitHub\Request
  */
-class Issues extends AbstractRequest
+class Me extends AbstractRequest
 {
     /**
-     * List all issues across all the authenticated user's visible repositories including owned repositories,
-     * member repositories, and organization repositories.
+     * List issues for a repository.
      *
      * @see http://developer.github.com/v3/issues/#list-issues
      * @param array $parameters
@@ -18,6 +17,6 @@ class Issues extends AbstractRequest
      */
     public function issues(array $parameters = array())
     {
-        return $this->client->get('/issues', $parameters);
+        return $this->client->get('/user/issues', $parameters);
     }
 }

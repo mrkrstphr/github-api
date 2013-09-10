@@ -174,6 +174,23 @@ class Repositories extends AbstractRequest
     }
 
     /**
+     * List issues for a repository.
+     *
+     * @see http://developer.github.com/v3/issues/#list-issues-for-a-repository
+     * @param string $owner
+     * @param string $repository
+     * @param array $parameters
+     * @return array
+     */
+    public function issues($owner, $repository, array $parameters = array())
+    {
+        return $this->client->get(
+            '/repos/' . urlencode($owner) . '/' . urlencode($repository) . '/issues',
+            $parameters
+        );
+    }
+
+    /**
      * @see http://developer.github.com/v3/repos/#list-languages
      * @param string $owner
      * @param string $repo
