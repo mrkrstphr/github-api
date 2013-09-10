@@ -9,6 +9,19 @@ namespace Martha\GitHub\Request;
 class Users extends AbstractRequest
 {
     /**
+     * Gets all gists for a given user.
+     *
+     * @see http://developer.github.com/v3/gists/#list-gists
+     * @param string $user
+     * @param array $parameters
+     * @return array
+     */
+    public function gists($user, array $parameters = array())
+    {
+        return $this->client->get('/users/' . urlencode($user) . '/repos', $parameters);
+    }
+
+    /**
      * Returns an instance of the Users\Emails API request end point.
      *
      * @return Users\Emails
