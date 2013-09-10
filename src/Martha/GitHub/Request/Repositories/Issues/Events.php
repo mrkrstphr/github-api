@@ -6,6 +6,8 @@ use Martha\GitHub\Request\AbstractRequest;
 
 /**
  * Class Events
+ *
+ * @see http://developer.github.com/v3/issues/events/
  * @package Martha\GitHub\Request\Repositories\Issues
  */
 class Events extends AbstractRequest
@@ -13,7 +15,6 @@ class Events extends AbstractRequest
     /**
      * If $number is provided, list events for that issue, otherwise list events for the repository.
      *
-     * @todo
      * @see http://developer.github.com/v3/issues/events/#list-events-for-an-issue
      * @see http://developer.github.com/v3/issues/events/#list-events-for-a-repository
      * @param string $owner
@@ -23,13 +24,15 @@ class Events extends AbstractRequest
      */
     public function events($owner, $repo, $number = '')
     {
-        return array();
+        $url = '/repos/' . urlencode($owner) . '/' . urlencode($repo) . '/issues' .
+            ($number ? '/' . urlencode($number) : '') . '/events';
+
+        return $this->client->get($url);
     }
 
     /**
      * Get a single event.
      *
-     * @todo
      * @see http://developer.github.com/v3/issues/events/#get-a-single-event
      * @param string $owner
      * @param string $repo
@@ -38,6 +41,8 @@ class Events extends AbstractRequest
      */
     public function event($owner, $repo, $id)
     {
-        return array();
+        return $this->client->get(
+            '/repos/' . urlencode($owner) . '/' . urlencode($repo) . '/issues/events/' . urlencode($id)
+        );
     }
 }
