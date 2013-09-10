@@ -3,6 +3,7 @@
 namespace Martha\GitHub\Request\Repositories;
 
 use Martha\GitHub\Request\AbstractRequest;
+use Martha\GitHub\Request\MalformedRequestException;
 
 /**
  * Class Labels
@@ -15,7 +16,6 @@ class Labels extends AbstractRequest
     /**
      * List all labels for this repository.
      *
-     * @todo
      * @see http://developer.github.com/v3/issues/labels/#list-all-labels-for-this-repository
      * @param string $owner
      * @param string $repo
@@ -23,13 +23,14 @@ class Labels extends AbstractRequest
      */
     public function labels($owner, $repo)
     {
-        return array();
+        return $this->client->get(
+            '/repos/' . urlencode($owner) . '/' . urlencode($repo) . '/labels'
+        );
     }
 
     /**
      * Get a single label.
      *
-     * @todo
      * @see http://developer.github.com/v3/issues/labels/#get-a-single-label
      * @param string $owner
      * @param string $repo
@@ -38,14 +39,16 @@ class Labels extends AbstractRequest
      */
     public function label($owner, $repo, $name)
     {
-        return array();
+        return $this->client->get(
+            '/repos/' . urlencode($owner) . '/' . urlencode($repo) . '/labels/' . urlencode($name)
+        );
     }
 
     /**
      * Create a label.
      *
-     * @todo
      * @see http://developer.github.com/v3/issues/labels/#create-a-label
+     * @throws MalformedRequestException
      * @param string $owner
      * @param string $repo
      * @param array $parameters
@@ -53,14 +56,21 @@ class Labels extends AbstractRequest
      */
     public function create($owner, $repo, array $parameters)
     {
-        return array();
+        if (!isset($parameters['name']) || !isset($parameters['color'])) {
+            throw new MalformedRequestException('Name and Color are required to create a label');
+        }
+
+        return $this->client->post(
+            '/repos/' . urlencode($owner) . '/' . urlencode($repo) . '/labels',
+            $parameters
+        );
     }
 
     /**
      * Update a label.
      *
-     * @todo
      * @see http://developer.github.com/v3/issues/labels/#update-a-label
+     * @throws MalformedRequestException
      * @param string $owner
      * @param string $repo
      * @param string $name
@@ -69,13 +79,19 @@ class Labels extends AbstractRequest
      */
     public function update($owner, $repo, $name, array $parameters)
     {
-        return array();
+        if (!isset($parameters['name']) || !isset($parameters['color'])) {
+            throw new MalformedRequestException('Name and Color are required to update a label');
+        }
+
+        return $this->client->patch(
+            '/repos/' . urlencode($owner) . '/' . urlencode($repo) . '/labels/' . urlencode($name),
+            $parameters
+        );
     }
 
     /**
      * Delete a label.
      *
-     * @todo
      * @see http://developer.github.com/v3/issues/labels/#delete-a-label
      * @param string $owner
      * @param string $repo
@@ -83,6 +99,8 @@ class Labels extends AbstractRequest
      */
     public function delete($owner, $repo, $name)
     {
-
+        $this->client->delete(
+            '/repos/' . urlencode($owner) . '/' . urlencode($repo) . '/labels/' . urlencode($name)
+        );
     }
 }
