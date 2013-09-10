@@ -197,7 +197,7 @@ class Client
     public function get($path, array $parameters = array())
     {
         $queryString = http_build_query($parameters);
-        $url = 'https://api.github.com' . $path . '?' . $queryString;
+        $url = 'https://api.github.com' . $path . ($queryString ? '?' . $queryString : '');
         return $this->request('GET', $url);
     }
 
