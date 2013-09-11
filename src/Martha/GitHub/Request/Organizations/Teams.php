@@ -6,6 +6,8 @@ use Martha\GitHub\Request\AbstractRequest;
 
 /**
  * Class Teams
+ *
+ * @todo
  * @package Martha\GitHub\Request\Organizations
  */
 class Teams extends AbstractRequest

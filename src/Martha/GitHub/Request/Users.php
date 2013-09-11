@@ -4,10 +4,38 @@ namespace Martha\GitHub\Request;
 
 /**
  * Class Users
+ *
+ * @see http://developer.github.com/v3/users/
  * @package Martha\GitHub\Request
  */
 class Users extends AbstractRequest
 {
+    /**
+     * Get all users.
+     *
+     * @todo
+     * @see http://developer.github.com/v3/users/#get-all-users
+     * @param array $parameters
+     * @return array
+     */
+    public function users(array $parameters = array())
+    {
+        return array();
+    }
+
+    /**
+     * Gets a single user.
+     *
+     * @todo
+     * @see http://developer.github.com/v3/users/#get-a-single-user
+     * @param string $user
+     * @return array
+     */
+    public function user($user)
+    {
+        return array();
+    }
+
     /**
      * Gets all gists for a given user.
      *
@@ -22,8 +50,7 @@ class Users extends AbstractRequest
     }
 
     /**
-     * If user is supplied, list all public organizations for that user. Otherwise list all public and private
-     * organizations for the authenticated user.
+     * List all public organizations for a user.
      *
      * @see http://developer.github.com/v3/orgs/#list-user-organizations
      * @param string $user
@@ -31,19 +58,7 @@ class Users extends AbstractRequest
      */
     public function organizations($user = '')
     {
-        $url = isset($user) ? '/users/' . urlencode($user) . '/orgs' : '/user/orgs';
-
-        return $this->client->get($url);
-    }
-
-    /**
-     * Returns an instance of the Users\Emails API request end point.
-     *
-     * @return Users\Emails
-     */
-    public function emails()
-    {
-        return new Users\Emails($this->getClient());
+        return $this->client->get('/users/' . urlencode($user) . '/orgs');
     }
 
     /**

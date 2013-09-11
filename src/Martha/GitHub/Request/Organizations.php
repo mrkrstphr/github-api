@@ -30,7 +30,7 @@ class Organizations extends AbstractRequest
      * @param array $parameters
      * @return array
      */
-    public function edit($organization, array $parameters)
+    public function update($organization, array $parameters)
     {
         return $this->client->patch('/orgs/' . urlencode($organization), $parameters);
     }
