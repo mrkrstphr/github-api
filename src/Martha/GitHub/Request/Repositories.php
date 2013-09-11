@@ -135,6 +135,8 @@ class Repositories extends AbstractRequest
     }
 
     /**
+     * Updates a repository.
+     *
      * @see http://developer.github.com/v3/repos/#edit
      * @throws MalformedRequestException
      * @param string $owner
@@ -142,7 +144,7 @@ class Repositories extends AbstractRequest
      * @param array $parameters
      * @return array
      */
-    public function edit($owner, $repo, array $parameters = array())
+    public function update($owner, $repo, array $parameters = array())
     {
         if (!isset($parameters['name'])) {
             throw new MalformedRequestException('Name is required when creating a repository');
@@ -154,6 +156,8 @@ class Repositories extends AbstractRequest
     }
 
     /**
+     * Get contributors of a repository.
+     *
      * @see http://developer.github.com/v3/repos/#list-contributors
      * @param string $owner
      * @param string $repo
@@ -217,7 +221,7 @@ class Repositories extends AbstractRequest
     /**
      * @see http://developer.github.com/v3/repos/#list-tags
      * @param string $owner
-     * @param string $repo
+     * @param string $repo)
      * @return array
      */
     public function tags($owner, $repo)
@@ -361,6 +365,16 @@ class Repositories extends AbstractRequest
     public function milestones()
     {
         return new Repositories\Milestones($this->getClient());
+    }
+
+    /**
+     * Return the Pull Requests API endpoint.
+     *
+     * @return Repositories\Pulls
+     */
+    public function pulls()
+    {
+        return new Repositories\Pulls($this->getClient());
     }
 
     /**

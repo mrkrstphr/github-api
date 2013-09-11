@@ -10,7 +10,6 @@ namespace Martha\GitHub\Request;
  */
 class GitIgnore extends AbstractRequest
 {
-
     /**
      * Render a Markdown document in raw mode.
      *
