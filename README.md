@@ -25,7 +25,9 @@ martha/github-api is now downloaded and ready to use!
 To use martha/github-api in your project, simply make sure Composer's autoloader is required where you need to use the
 library:
 
-```php:
+```php
+<?php
+
 // change to the path to your vendor directory:
 require __DIR__ . '/../vendor/autoload.php';
 ```
@@ -36,7 +38,9 @@ This is all that is necessary to configure martha/github-api.
 
 To use the library, all you need to do is instantiate an instance of the client:
 
-```php:
+```php
+<?php
+
 use Martha\GitHub\Client;
 
 $client = new Client();
@@ -48,7 +52,11 @@ From the `$client` instance, all API calls can be made.
 
 To authenticate, simply pass authentication information to the constructor of `Client` as an array:
 
-```php:
+```php
+<?php
+
+use Martha\GitHub\Client;
+
 $client = new Client(array('access_token' => 'FOO'));
 ```
 
@@ -58,7 +66,9 @@ For more information, see the [authentication documentation](docs/authentication
 
 To illustrate how API calls are made, let's say we want to get information about a public repository:
 
-```php:
+```php
+<?php
+
 use Martha\GitHub\Client;
 
 $client = new Client();
