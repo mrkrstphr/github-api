@@ -15,19 +15,18 @@ class Members extends AbstractRequest
     /**
      * List all users who are members of an organization.
      *
-     * @todo
      * @see http://developer.github.com/v3/orgs/members/#members-list
+     * @param string $organization
      * @return array
      */
-    public function members()
+    public function members($organization)
     {
-        return array();
+        return $this->getClient()->get('/orgs/' . urlencode($organization) . '/members');
     }
 
     /**
      * Check if a user is, publicly or privately, a member of the organization.
      *
-     * @todo
      * @see http://developer.github.com/v3/orgs/members/#check-membership
      * @param string $organization
      * @param string $user
@@ -35,38 +34,38 @@ class Members extends AbstractRequest
      */
     public function isMember($organization, $user)
     {
-        return false;
+        $this->getClient()->get('/orgs/' . urlencode($organization) . '/members/' . urlencode($user));
+
+        return $this->getClient()->getLastResponse()->getStatusCode() == '204';
     }
 
     /**
      * Remove a member from an organization.
      *
-     * @todo
      * @see http://developer.github.com/v3/orgs/members/#remove-a-member
      * @param string $organization
      * @param string $user
      */
     public function remove($organization, $user)
     {
+        $this->getClient()->delete('/orgs/' . urlencode($organization) . '/members/' . urlencode($user));
     }
 
     /**
      * Public members list.
      *
-     * @todo
      * @see http://developer.github.com/v3/orgs/members/#public-members-list
      * @param string $organization
      * @return array
      */
     public function publicMembers($organization)
     {
-        return array();
+        return $this->getClient()->get('/orgs/' . urlencode($organization) . '/public_members');
     }
 
     /**
      * Check public membership.
      *
-     * @todo
      * @see http://developer.github.com/v3/orgs/members/#check-public-membership
      * @param string $organization
      * @param string $user
@@ -74,30 +73,32 @@ class Members extends AbstractRequest
      */
     public function isPublicMember($organization, $user)
     {
-        return false;
+        $this->getClient()->get('/orgs/' . urlencode($organization) . '/public_members/' . urlencode($user));
+
+        return $this->getClient()->getLastResponse()->getStatusCode() == '204';
     }
 
     /**
      * Publicize a user's membership.
      *
-     * @todo
      * @see http://developer.github.com/v3/orgs/members/#publicize-a-users-membership
      * @param string $organization
      * @param string $user
      */
     public function publicize($organization, $user)
     {
+        $this->getClient()->put('/orgs/' . urlencode($organization) . '/public_members/' . urlencode($user));
     }
 
     /**
      * Conceal a user's membership.
      *
-     * @todo
      * @see http://developer.github.com/v3/orgs/members/#conceal-a-users-membership
      * @param string $organization
      * @param string $user
      */
     public function conceal($organization, $user)
     {
+        $this->getClient()->delete('/orgs/' . urlencode($organization) . '/public_members/' . urlencode($user));
     }
 }
