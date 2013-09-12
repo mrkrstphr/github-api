@@ -56,7 +56,6 @@ class Keys extends AbstractRequest
     /**
      * Update a public key.
      *
-     * @todo
      * @see http://developer.github.com/v3/users/keys/#update-a-public-key
      * @throws MalformedRequestException
      * @param array $parameters
