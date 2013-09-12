@@ -7,9 +7,23 @@ use Martha\GitHub\Request\AbstractRequest;
 /**
  * Class Teams
  *
- * @todo
+ * @see http://developer.github.com/v3/orgs/teams/
  * @package Martha\GitHub\Request\Organizations
  */
 class Teams extends AbstractRequest
 {
+    public function teams($organization)
+    {
+        return array();
+    }
+
+    public function team($id)
+    {
+        return array();
+    }
+
+    public function create($organization, array $parameters)
+    {
+        return array();
+    }
 }
