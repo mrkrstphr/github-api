@@ -15,37 +15,34 @@ class Emails extends AbstractRequest
     /**
      * List email addresses for a user.
      *
-     * @todo
      * @see http://developer.github.com/v3/users/emails/#list-email-addresses-for-a-user
      * @return array
      */
     public function emails()
     {
-        return array();
+        return $this->getClient()->get('/user/emails');
     }
 
     /**
      * Add email address(es).
      *
-     * @todo
      * @see http://developer.github.com/v3/users/emails/#add-email-addresses
      * @param array $parameters
      * @return array
      */
     public function create(array $parameters)
     {
-        return array();
+        return $this->getClient()->post('/user/emails', $parameters);
     }
 
     /**
      * Delete email address(es).
      *
-     * @todo
      * @see http://developer.github.com/v3/users/emails/#delete-email-addresses
      * @param mixed $parameters
      */
     public function delete($parameters)
     {
-
+        $this->getClient()->delete('/user/emails', $parameters);
     }
 }
