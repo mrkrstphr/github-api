@@ -4,6 +4,8 @@ namespace Martha\GitHub\Request;
 
 /**
  * Class Me
+ *
+ * @see http://developer.github.com/v3/users/
  * @package Martha\GitHub\Request
  */
 class Me extends AbstractRequest
@@ -11,13 +13,12 @@ class Me extends AbstractRequest
     /**
      * Gets the authenticated user.
      *
-     * @todo
      * @see http://developer.github.com/v3/users/#get-the-authenticated-user
      * @return array
      */
     public function user()
     {
-        return array();
+        return $this->getClient()->get('/user');
     }
 
     /**
@@ -33,14 +34,13 @@ class Me extends AbstractRequest
     /**
      * Updates the authenticated user.
      *
-     * @todo
      * @see http://developer.github.com/v3/users/#update-the-authenticated-user
      * @param array $parameters
      * @return array
      */
     public function update(array $parameters)
     {
-        return array();
+        return $this->getClient()->post('/user', $parameters);
     }
 
     /**

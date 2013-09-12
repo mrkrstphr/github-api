@@ -3,6 +3,7 @@
 namespace Martha\GitHub\Request\Me;
 
 use Martha\GitHub\Request\AbstractRequest;
+use Martha\GitHub\Request\MalformedRequestException;
 
 /**
  * Class Keys
@@ -15,63 +16,68 @@ class Keys extends AbstractRequest
     /**
      * List your public keys.
      *
-     * @todo
      * @see http://developer.github.com/v3/users/keys/#list-your-public-keys
      * @return array
      */
     public function keys()
     {
-        return array();
+        return $this->getClient()->get('/user/keys');
     }
 
     /**
      * Get a single public key.
      *
-     * @todo
      * @see http://developer.github.com/v3/users/keys/#get-a-single-public-key
      * @param int $id
      * @return array
      */
     public function key($id)
     {
-        return array();
+        return $this->getClient()->get('/user/keys/' . urlencode($id));
     }
 
     /**
      * Create a public key.
      *
-     * @todo
      * @see http://developer.github.com/v3/users/keys/#create-a-public-key
+     * @throws MalformedRequestException
      * @param array $parameters
      * @return array
      */
     public function create(array $parameters)
     {
-        return array();
+        if (!isset($parameters['title']) || !isset($parameters['key'])) {
+            throw new MalformedRequestException('Title and Key are required to create a key');
+        }
+
+        return $this->getClient()->post('/user/keys');
     }
 
     /**
      * Update a public key.
      *
-     * @todo
      * @see http://developer.github.com/v3/users/keys/#update-a-public-key
+     * @throws MalformedRequestException
      * @param array $parameters
      * @return array
      */
     public function update(array $parameters)
     {
-        return array();
+        if (!isset($parameters['title']) || !isset($parameters['key'])) {
+            throw new MalformedRequestException('Title and Key are required to create a key');
+        }
+
+        return $this->getClient()->patch('/user/keys');
     }
 
     /**
      * Delete a public key.
      *
-     * @todo
      * @see http://developer.github.com/v3/users/keys/#delete-a-public-key
      * @param int $id
      */
     public function delete($id)
     {
-
+        $this->getClient()->delete('/user/keys/' . urlencode($id));
     }
 }
