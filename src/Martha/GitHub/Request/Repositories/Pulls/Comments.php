@@ -3,9 +3,12 @@
 namespace Martha\GitHub\Request\Repositories\Pulls;
 
 use Martha\GitHub\Request\AbstractRequest;
+use Martha\GitHub\Request\MalformedRequestException;
 
 /**
  * Class Comments
+ *
+ * @see http://developer.github.com/v3/pulls/comments/
  * @package Martha\GitHub\Request\Repositories\Pulls
  */
 class Comments extends AbstractRequest
@@ -14,7 +17,6 @@ class Comments extends AbstractRequest
      * If $number is provided, list comments on that pull request, otherwise list comments on all pulls in the
      * given repository.
      *
-     * @todo
      * @see http://developer.github.com/v3/pulls/comments/#list-comments-on-a-pull-request
      * @param string $owner
      * @param string $repo
@@ -23,13 +25,15 @@ class Comments extends AbstractRequest
      */
     public function comments($owner, $repo, $number = '')
     {
-        return array();
+        $url = '/repos/' . urlencode($owner) . '/' . urlencode($repo) . '/pulls' .
+            ($number ? '/' . urlencode($number) : '') . '/comments';
+
+        return $this->getClient()->get($url);
     }
 
     /**
      * Get a single comment.
      *
-     * @todo
      * @see http://developer.github.com/v3/pulls/comments/#get-a-single-comment
      * @param string $owner
      * @param string $repo
@@ -38,43 +42,64 @@ class Comments extends AbstractRequest
      */
     public function comment($owner, $repo, $number)
     {
-        return array();
+        return $this->getClient()->get(
+            '/repos/' . urlencode($owner) . '/' . urlencode($repo) . '/pulls/comments/' . urlencode($number)
+        );
     }
 
     /**
      * Create a comment.
      *
-     * @todo
      * @see http://developer.github.com/v3/pulls/comments/#create-a-comment
+     * @throw MalformedRequestException
      * @param string $owner
      * @param string $repo
      * @param string $number
+     * @param array $parameters
      * @return array
      */
-    public function create($owner, $repo, $number)
+    public function create($owner, $repo, $number, array $parameters)
     {
-        return array();
+        $require = array('body', 'commit_id', 'path', 'position');
+
+        foreach ($require as $required) {
+            if (!isset($parameters[$required])) {
+                throw new MalformedRequestException($required . ' is required to create a pull request comment');
+            }
+        }
+
+        return $this->getClient()->post(
+            '/repos/' . urlencode($owner) . '/' . urlencode($repo) . '/pulls/' . urlencode($number) . '/comments',
+            $parameters
+        );
     }
 
     /**
      * Edit a comment.
      *
-     * @todo
      * @see http://developer.github.com/v3/pulls/comments/#edit-a-comment
+     * @throws MalformedRequestException
      * @param string $owner
      * @param string $repo
      * @param string $number
+     * @param array $parameters
      * @return array
      */
-    public function update($owner, $repo, $number)
+    public function update($owner, $repo, $number, array $parameters)
     {
-        return array();
+        if (!isset($parameters['body'])) {
+            throw new MalformedRequestException('Body is required to update a comment');
+        }
+
+        return $this->getClient()->patch(
+            '/repos/' . urlencode($owner) . '/' . urlencode($repo) . '/pulls/comments/' . urlencode($number),
+            $parameters
+        );
     }
 
     /**
      * Delete a comment.
      *
-     * @todo
      * @see http://developer.github.com/v3/pulls/comments/#edit-a-comment
      * @param string $owner
      * @param string $repo
@@ -82,5 +107,8 @@ class Comments extends AbstractRequest
      */
     public function delete($owner, $repo, $number)
     {
+        $this->getClient()->delete(
+            '/repos/' . urlencode($owner) . '/' . urlencode($repo) . '/pulls/comments/' . urlencode($number)
+        );
     }
 }
