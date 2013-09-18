@@ -2,8 +2,7 @@
 
 namespace Martha\GitHub\Authentication;
 
-use Guzzle\Http\Message\RequestInterface;
-
+use Buzz\Message\Request;
 /**
  * Class AbstractAuthentication
  * @package Martha\GitHub\Authentication
@@ -13,8 +12,8 @@ abstract class AbstractAuthentication
     /**
      * Modifies the request to provide the necessary authentication information.
      *
-     * @param RequestInterface $request
+     * @param Request $request
      * @return mixed
      */
-    abstract public function authenticate(RequestInterface $request);
+    abstract public function authenticate(Request $request);
 }

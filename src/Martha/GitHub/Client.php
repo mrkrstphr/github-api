@@ -180,11 +180,25 @@ class Client
      */
     protected function request($method, $path, array $parameters = array())
     {
-        $request = $this->client->createRequest($method, $path, null, $parameters);
+        $resource = str_replace('https://api.github.com', '', $path);
+
+        $content = json_encode($parameters);
+
+        $request = new \Buzz\Message\Request($method, $resource, 'https://api.github.com');
+        $request->setContent($content);
 
         if ($this->authentication) {
             $this->authentication->authenticate($request);
         }
+
+
+        $response = new \Buzz\Message\Response();
+
+        $client = new \Buzz\Client\Curl();
+        $client->send($request, $response);
+
+        $request = $this->client->createRequest($method, $path, null, $parameters);
+
 
         $response = $request->send();
 
