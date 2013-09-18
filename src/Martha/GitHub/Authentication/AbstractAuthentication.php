@@ -3,6 +3,7 @@
 namespace Martha\GitHub\Authentication;
 
 use Buzz\Message\Request;
+
 /**
  * Class AbstractAuthentication
  * @package Martha\GitHub\Authentication
