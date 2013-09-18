@@ -2,6 +2,7 @@
 
 namespace Martha\GitHub\Authentication;
 
+use Buzz\Message\Request;
 use Guzzle\Http\Message\RequestInterface;
 
 /**
@@ -31,8 +32,8 @@ class AccessToken extends AbstractAuthentication
      *
      * @param RequestInterface $request
      */
-    public function authenticate(RequestInterface $request)
+    public function authenticate(Request $request)
     {
-        $request->addHeader('Authorization', 'token ' . $this->accessToken);
+        $request->addHeader('Authorization: token ' . $this->accessToken);
     }
 }
