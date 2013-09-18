@@ -7,7 +7,6 @@
     "license": "GPL-3.0",
     "require": {
         "php": ">=5.3",
-        "guzzle/guzzle": "3.7.*",
         "kriswallsmith/buzz": "0.10"
     },
     "require-dev": {

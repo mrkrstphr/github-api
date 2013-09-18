@@ -2,8 +2,10 @@
 
 namespace Martha\GitHub;
 
-use Guzzle\Http\Client as HttpClient;
-use Guzzle\Http\Message\Response;
+use Buzz\Client\AbstractClient;
+use Buzz\Client\Curl;
+use Buzz\Message\Request as BuzzRequest;
+use Buzz\Message\Response as BuzzResponse;
 use Martha\GitHub\Authentication\AbstractAuthentication;
 use Martha\GitHub\Authentication\AuthenticationFactory;
 
@@ -14,7 +16,7 @@ use Martha\GitHub\Authentication\AuthenticationFactory;
 class Client
 {
     /**
-     * @var \Guzzle\Http\Client
+     * @var AbstractClient
      */
     protected $client;
 
@@ -30,18 +32,18 @@ class Client
     protected $authentication;
 
     /**
-     * @var Response
+     * @var BuzzResponse
      */
     protected $lastResponse;
 
     /**
      * @param array $config
-     * @param HttpClient $httpClient
+     * @param AbstractClient $httpClient
      */
-    public function __construct($config = array(), HttpClient $httpClient = null)
+    public function __construct($config = array(), AbstractClient $httpClient = null)
     {
         if (!$httpClient) {
-            $httpClient = new HttpClient();
+            $httpClient = new Curl();
         }
 
         $this->client = $httpClient;
@@ -64,7 +66,7 @@ class Client
     /**
      * Get the HTTP Client used to make the API requests.
      *
-     * @return HttpClient
+     * @return AbstractClient
      */
     public function getHttpClient()
     {
@@ -134,11 +136,11 @@ class Client
     /**
      * Returns an instance of the PullRequests API request end point.
      *
-     * @return Request\PullRequests
+     * @return Request\Pulls
      */
     public function pullRequests()
     {
-        return new Request\PullRequests($this);
+        return new Request\Pulls($this);
     }
 
     /**
@@ -182,25 +184,20 @@ class Client
     {
         $resource = str_replace('https://api.github.com', '', $path);
 
-        $content = json_encode($parameters);
+        $request = new BuzzRequest($method, $resource, 'https://api.github.com');
 
-        $request = new \Buzz\Message\Request($method, $resource, 'https://api.github.com');
-        $request->setContent($content);
+        if ($method != 'GET' && $parameters) {
+            $content = json_encode($parameters);
+            $request->setContent($content);
+        }
 
         if ($this->authentication) {
             $this->authentication->authenticate($request);
         }
 
+        $response = new BuzzResponse();
 
-        $response = new \Buzz\Message\Response();
-
-        $client = new \Buzz\Client\Curl();
-        $client->send($request, $response);
-
-        $request = $this->client->createRequest($method, $path, null, $parameters);
-
-
-        $response = $request->send();
+        $this->getHttpClient()->send($request, $response);
 
         if ($response->getStatusCode() == '302') {
             $location = $response->getHeader('Location');
@@ -212,10 +209,10 @@ class Client
 
         $this->lastResponse = $response;
 
-        if (substr($response->getContentType(), 0, 16) == 'application/json') {
-            $data = $response->json();
+        if (substr($response->getHeader('Content-type'), 0, 16) == 'application/json') {
+            $data = json_decode($response->getContent(), true);
         } else {
-            $data = $response->getBody(true);
+            $data = $response->getContent();
         }
 
         return $data;
@@ -224,7 +221,7 @@ class Client
     /**
      * Get the last response returned from the API.
      *
-     * @return Response
+     * @return BuzzResponse
      */
     public function getLastResponse()
     {
