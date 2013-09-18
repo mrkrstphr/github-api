@@ -1,5 +1,5 @@
 {
-    "name": "martha/github-api",
+    "name": "martha-ci/github-api",
     "description": "GitHub API Implementation in PHP 5.3+",
     "type": "library",
     "keywords": ["github", "api", "php"],
