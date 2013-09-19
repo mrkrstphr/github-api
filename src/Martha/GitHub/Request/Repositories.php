@@ -11,71 +11,33 @@ namespace Martha\GitHub\Request;
 class Repositories extends AbstractRequest
 {
     /**
-     * Get all repositories for the current authenticated user.
-     *
-     * @see http://developer.github.com/v3/repos/#list-your-repositories
-     * @param array $parameters
-     * @return array
-     */
-    public function me(array $parameters = array())
-    {
-        $defaults = array('page' => 1);
-        $parameters = array_merge($defaults, $parameters);
-
-        $response = $this->client->get('/user/repos', $parameters);
-
-        return $response;
-    }
-
-    /**
-     * Get all repositories for the specified user.
-     *
-     * @see http://developer.github.com/v3/repos/#list-user-repositories
-     * @param string $user
-     * @param array $parameters
-     * @return array
-     */
-    public function user($user, array $parameters = array())
-    {
-        $defaults = array('page' => 1);
-        $parameters = array_merge($defaults, $parameters);
-
-        $response = $this->client->get('/users/' . urlencode($user) . '/repos', $parameters);
-
-        return $response;
-    }
-
-    /**
-     * Get all repositories for the specified organization.
-     *
-     * @see http://developer.github.com/v3/repos/#list-organization-repositories
-     * @param string $organization
-     * @param array $parameters
-     * @return array
-     */
-    public function organization($organization, array $parameters = array())
-    {
-        $defaults = array('page' => 1);
-        $parameters = array_merge($defaults, $parameters);
-
-        $response = $this->client->get('/orgs/' . urlencode($organization) . '/repos', $parameters);
-
-        return $response;
-    }
-
-    /**
      * Get all public GitHub repositories.
      *
      * @see http://developer.github.com/v3/repos/#list-all-public-repositories
      * @param array $parameters
      * @return array
      */
-    public function all(array $parameters = array())
+    public function repositories(array $parameters = array())
     {
         $defaults = array('page' => 1);
         $parameters = array_merge($defaults, $parameters);
 
         $response = $this->client->get('/repositories', $parameters);
+
+        return $response;
+    }
+
+    /**
+     * Get information about a specific GitHub repository.
+     *
+     * @see http://developer.github.com/v3/repos/#get
+     * @param string $owner
+     * @param string $repo
+     * @return array
+     */
+    public function repository($owner, $repo)
+    {
+        $response = $this->client->get('/repos/' . urlencode($owner) . '/' . urlencode($repo));
 
         return $response;
     }
@@ -95,41 +57,6 @@ class Repositories extends AbstractRequest
         }
 
         $response = $this->client->post('/user/repos', $parameters);
-
-        return $response;
-    }
-
-    /**
-     * Creates a new repository for the specified organization.
-     *
-     * @see http://developer.github.com/v3/repos/#create
-     * @param string $organization
-     * @param array $parameters
-     * @return array
-     * @throws MalformedRequestException
-     */
-    public function createOrg($organization, array $parameters = array())
-    {
-        if (!isset($parameters['name'])) {
-            throw new MalformedRequestException('Name is required when creating a repository');
-        }
-
-        $response = $this->client->post('/orgs/' . urlencode($organization) . '/repos', $parameters);
-
-        return $response;
-    }
-
-    /**
-     * Get information about a specific GitHub repository.
-     *
-     * @see http://developer.github.com/v3/repos/#get
-     * @param string $owner
-     * @param string $repo
-     * @return array
-     */
-    public function get($owner, $repo)
-    {
-        $response = $this->client->get('/repos/' . urlencode($owner) . '/' . urlencode($repo));
 
         return $response;
     }

@@ -62,6 +62,24 @@ class Users extends AbstractRequest
     }
 
     /**
+     * Get all repositories for the specified user.
+     *
+     * @see http://developer.github.com/v3/repos/#list-user-repositories
+     * @param string $user
+     * @param array $parameters
+     * @return array
+     */
+    public function repositories($user, array $parameters = array())
+    {
+        $defaults = array('page' => 1);
+        $parameters = array_merge($defaults, $parameters);
+
+        $response = $this->client->get('/users/' . urlencode($user) . '/repos', $parameters);
+
+        return $response;
+    }
+
+    /**
      * Returns an instance of the Users\Followers API request end point.
      *
      * @return Users\Followers

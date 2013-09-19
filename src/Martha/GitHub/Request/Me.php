@@ -32,6 +32,23 @@ class Me extends AbstractRequest
     }
 
     /**
+     * Get all repositories for the current authenticated user.
+     *
+     * @see http://developer.github.com/v3/repos/#list-your-repositories
+     * @param array $parameters
+     * @return array
+     */
+    public function repositories(array $parameters = array())
+    {
+        $defaults = array('page' => 1);
+        $parameters = array_merge($defaults, $parameters);
+
+        $response = $this->client->get('/user/repos', $parameters);
+
+        return $response;
+    }
+
+    /**
      * Updates the authenticated user.
      *
      * @see http://developer.github.com/v3/users/#update-the-authenticated-user
