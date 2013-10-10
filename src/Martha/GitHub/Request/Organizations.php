@@ -60,6 +60,16 @@ class Organizations extends AbstractRequest
     }
 
     /**
+     * Returns an instance of the Organizations\Repositories API request end point.
+     *
+     * @return Organizations\Repositories
+     */
+    public function repositories()
+    {
+        return new Organizations\Repositories($this->getClient());
+    }
+
+    /**
      * Returns an instance of the Organizations\Teams API request end point.
      *
      * @see http://developer.github.com/v3/orgs/teams/
