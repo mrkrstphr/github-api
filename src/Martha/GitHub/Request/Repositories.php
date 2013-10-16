@@ -105,20 +105,13 @@ class Repositories extends AbstractRequest
     }
 
     /**
-     * List issues for a repository.
+     * Return the Issues API endpoint.
      *
-     * @see http://developer.github.com/v3/issues/#list-issues-for-a-repository
-     * @param string $owner
-     * @param string $repository
-     * @param array $parameters
-     * @return array
+     * @return Repositories\Issues
      */
-    public function issues($owner, $repository, array $parameters = array())
+    public function issues()
     {
-        return $this->client->get(
-            '/repos/' . urlencode($owner) . '/' . urlencode($repository) . '/issues',
-            $parameters
-        );
+        return new Repositories\Issues($this->getClient());
     }
 
     /**
