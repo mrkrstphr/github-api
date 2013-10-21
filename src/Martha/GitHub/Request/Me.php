@@ -22,6 +22,16 @@ class Me extends AbstractRequest
     }
 
     /**
+     * List emails for the authenticated user.
+     *
+     * @return array
+     */
+    public function emails()
+    {
+        return $this->client->get('/user/emails');
+    }
+
+    /**
      * List public and private organizations for the authenticated user.
      *
      * @return array
