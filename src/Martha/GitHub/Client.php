@@ -185,6 +185,7 @@ class Client
         $resource = str_replace('https://api.github.com', '', $path);
 
         $request = new BuzzRequest($method, $resource, 'https://api.github.com');
+        $request->addHeader('User-agent: Martha-Github-Client');
 
         if ($method != 'GET' && $parameters) {
             $content = json_encode($parameters);
