@@ -37,6 +37,21 @@ class Client
     protected $lastResponse;
 
     /**
+     * @var int
+     */
+    protected $rateLimit;
+
+    /**
+     * @var int
+     */
+    protected $rateLimitRemaining;
+
+    /**
+     * @var int
+     */
+    protected $rateLimitReset;
+
+    /**
      * @param array $config
      * @param AbstractClient $httpClient
      */
@@ -216,6 +231,10 @@ class Client
             $data = $response->getContent();
         }
 
+        $this->rateLimit = $response->getHeader('X-RateLimit-Limit');
+        $this->rateLimitRemaining = $response->getHeader('X-RateLimit-Remaining');
+        $this->rateLimitReset = $response->getHeader('X-RateLimit-Reset');
+
         return $data;
     }
 
@@ -279,5 +298,29 @@ class Client
     public function delete($path, array $parameters = array())
     {
         return $this->request('DELETE', 'https://api.github.com' . $path, $parameters);
+    }
+
+    /**
+     * @return int
+     */
+    public function getRateLimit()
+    {
+        return $this->rateLimit;
+    }
+
+    /**
+     * @return int
+     */
+    public function getRateLimitRemaining()
+    {
+        return $this->rateLimitRemaining;
+    }
+
+    /**
+     * @return int
+     */
+    public function getRateLimitReset()
+    {
+        return date('Y-m-d H:i:s', $this->rateLimitReset);
     }
 }
