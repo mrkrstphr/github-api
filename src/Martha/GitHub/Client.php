@@ -16,6 +16,16 @@ use Martha\GitHub\Authentication\AuthenticationFactory;
 class Client
 {
     /**
+     *
+     */
+    const GITHUB_URL = 'https://github.com';
+
+    /**
+     *
+     */
+    const GITHUB_API_URL = 'https://api.github.com';
+
+    /**
      * @var AbstractClient
      */
     protected $client;
@@ -190,17 +200,29 @@ class Client
     }
 
     /**
-     * @param string $method
-     * @param string $path
-     * @param array $parameters
-     * @return mixed
+     * Returns an instance of the Login request end point.
+     * 
+     * @return Request\Login
      */
-    protected function request($method, $path, array $parameters = array())
+    public function login()
     {
-        $resource = str_replace('https://api.github.com', '', $path);
+        return new Request\Login($this);
+    }
 
-        $request = new BuzzRequest($method, $resource, 'https://api.github.com');
+    /**
+     * Prepare an API request and return the Request object for further manipulation.
+     *
+     * @param string $method
+     * @param string $resource
+     * @param array $parameters
+     * @param string $url
+     * @return BuzzRequest
+     */
+    public function prepareRequest($method, $resource, array $parameters = array(), $url = self::GITHUB_API_URL)
+    {
+        $request = new BuzzRequest($method, $resource, $url);
         $request->addHeader('User-agent: Martha-Github-Client');
+        $request->addHeader('Content-type: application/json');
 
         if ($method != 'GET' && $parameters) {
             $content = json_encode($parameters);
@@ -211,6 +233,17 @@ class Client
             $this->authentication->authenticate($request);
         }
 
+        return $request;
+    }
+
+    /**
+     * Runs the given Request, parses the response and returns it.
+     *
+     * @param BuzzRequest $request
+     * @return array|mixed
+     */
+    public function processRequest(BuzzRequest $request)
+    {
         $response = new BuzzResponse();
 
         $this->getHttpClient()->send($request, $response);
@@ -239,6 +272,19 @@ class Client
     }
 
     /**
+     * @param string $method
+     * @param string $resource
+     * @param array $parameters
+     * @param string $url
+     * @return mixed
+     */
+    protected function request($method, $resource, array $parameters = array(), $url = self::GITHUB_API_URL)
+    {
+        $request = $this->prepareRequest($method, $resource, $parameters, $url);
+        return $this->processRequest($request);
+    }
+
+    /**
      * Get the last response returned from the API.
      *
      * @return BuzzResponse
@@ -251,53 +297,58 @@ class Client
     /**
      * @param string $path
      * @param array $parameters
+     * @param string $url
      * @return array
      */
-    public function get($path, array $parameters = array())
+    public function get($path, array $parameters = array(), $url = self::GITHUB_API_URL)
     {
         $queryString = http_build_query($parameters);
-        $url = 'https://api.github.com' . $path . ($queryString ? '?' . $queryString : '');
-        return $this->request('GET', $url);
+        $resource = $path . ($queryString ? '?' . $queryString : '');
+        return $this->request('GET', $resource, [], $url);
     }
 
     /**
      * @param string $path
      * @param array $parameters
+     * @param string $url
      * @return array
      */
-    public function post($path, array $parameters = array())
+    public function post($path, array $parameters = array(), $url = self::GITHUB_API_URL)
     {
-        return $this->request('POST', 'https://api.github.com' . $path, $parameters);
+        return $this->request('POST', $path, $parameters, $url);
     }
 
     /**
      * @param string $path
      * @param array $parameters
+     * @param string $url
      * @return array
      */
-    public function put($path, array $parameters = array())
+    public function put($path, array $parameters = array(), $url = self::GITHUB_API_URL)
     {
-        return $this->request('PUT', 'https://api.github.com' . $path, $parameters);
+        return $this->request('PUT', $path, $parameters, $url);
     }
 
     /**
      * @param string $path
      * @param array $parameters
+     * @param string $url
      * @return array
      */
-    public function patch($path, array $parameters = array())
+    public function patch($path, array $parameters = array(), $url = self::GITHUB_API_URL)
     {
-        return $this->request('PATCH', 'https://api.github.com' . $path, $parameters);
+        return $this->request('PATCH', $path, $parameters, $url);
     }
 
     /**
      * @param string $path
      * @param array $parameters
+     * @param string $url
      * @return array
      */
-    public function delete($path, array $parameters = array())
+    public function delete($path, array $parameters = array(), $url = self::GITHUB_API_URL)
     {
-        return $this->request('DELETE', 'https://api.github.com' . $path, $parameters);
+        return $this->request('DELETE', $path, $parameters, $url);
     }
 
     /**
