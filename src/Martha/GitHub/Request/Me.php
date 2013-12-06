@@ -71,4 +71,15 @@ class Me extends AbstractRequest
     {
         return $this->client->get('/user/issues', $parameters);
     }
+
+    /**
+     * User/emails API endpoint.
+     *
+     * @see http://developer.github.com/v3/users/emails
+     * @return Me\Emails
+     */
+    public function emails()
+    {
+        return new Me\Emails($this->getClient());
+    }
 }
