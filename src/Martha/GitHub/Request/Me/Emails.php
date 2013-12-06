@@ -20,7 +20,10 @@ class Emails extends AbstractRequest
      */
     public function emails()
     {
-        return $this->getClient()->get('/user/emails');
+        $request = $this->client->prepareRequest('GET', '/user/emails');
+        $request->addHeader('Accept: application/vnd.github.v3');
+
+        return $this->client->processRequest($request);
     }
 
     /**
