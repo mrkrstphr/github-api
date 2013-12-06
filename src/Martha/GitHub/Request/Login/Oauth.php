@@ -7,11 +7,16 @@ use Martha\GitHub\Request\AbstractRequest;
 
 /**
  * Class Oauth
+ *
+ * @see http://developer.github.com/v3/oauth/#web-application-flow
  * @package Martha\GitHub\Request\Login
  */
 class Oauth extends AbstractRequest
 {
     /**
+     * Provide the ability to get an access token from an oauth code.
+     *
+     * @see http://developer.github.com/v3/oauth/#web-application-flow
      * @param array $parameters
      * @return array
      */
