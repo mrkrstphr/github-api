@@ -199,6 +199,11 @@ class Client
         return new Request\Users($this);
     }
 
+    /**
+     * Returns an instance of the Login request end point.
+     * 
+     * @return Request\Login
+     */
     public function login()
     {
         return new Request\Login($this);
